@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NOOS_API.Contracts;
 using NOOS_API.Data;
+using NOOS_API.Mappings;
 using NOOS_API.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace NOOS_API
 {
@@ -44,6 +46,8 @@ namespace NOOS_API
                     .AllowAnyHeader()
                     .AllowAnyMethod());
             });
+
+            services.AddAutoMapper(typeof(Maps));  // mapping database
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
