@@ -67,6 +67,12 @@ namespace NOOS_API
 
 
             services.AddSingleton<ILoggerService, LoggerService>(); //implementation of the contract
+
+            //addingindividual controllers
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBuyerRepository, BuyerRepository>();
+
             
             services.AddControllers();   // leave the controller for last (not critical)
         }

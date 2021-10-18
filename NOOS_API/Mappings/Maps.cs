@@ -13,6 +13,7 @@ namespace NOOS_API.Mappings
         public Maps()
         {
             CreateMap<Subscription, SubscriptionDTO>().ReverseMap();
+            CreateMap<Subscription, ButtonTriggerDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Buyer, BuyerDTO>().ReverseMap();
         }

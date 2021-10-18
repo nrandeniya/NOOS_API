@@ -4,5 +4,30 @@
         <name>NOOS_API</name>
     </assembly>
     <members>
+        <member name="T:NOOS_API.Controllers.SubscriptionsController">
+            <summary>
+            endpoint used for interacting with the Subscriptions in the NOOS database
+            </summary>
+        </member>
+        <member name="M:NOOS_API.Controllers.SubscriptionsController.GetSubscriptions">
+            <summary>
+            Get all Subscriptions
+            </summary>
+            <returns>All Subs</returns>
+        </member>
+        <member name="M:NOOS_API.Controllers.SubscriptionsController.GetSubscription(System.Int32)">
+            <summary>
+            Get a Subscription by ID
+            </summary>
+            <param name="id"></param>
+            <returns>A Subscription record</returns>
+        </member>
+        <member name="M:NOOS_API.Controllers.SubscriptionsController.Create(NOOS_API.DTOs.ButtonTriggerDTO)">
+            <summary>
+            Triggered by the NOOS button in the product page
+            </summary>
+            <param name="subscriptionDTO"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

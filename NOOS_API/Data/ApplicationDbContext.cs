@@ -8,10 +8,10 @@ namespace NOOS_API.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        DbSet<Subscription> Subscriptions { get; set; }
-        DbSet<Product> Products { get; set; }
-        DbSet<Seller> Sellers { get; set; }
-        DbSet<Buyer> Buyers { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Seller> Sellers { get; set; }
+        public DbSet<Buyer> Buyers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

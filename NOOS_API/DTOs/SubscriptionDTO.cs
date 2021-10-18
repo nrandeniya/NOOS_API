@@ -13,6 +13,15 @@ namespace NOOS_API.DTOs
         public int BuyerId { get; set; }
         public DateTime Timestamp { get; set; }
         public double OriginalPrice { get; set; }
+    }
+
+    public class ButtonTriggerDTO
+    {
+        public int SellerId { get; set; }
+        public int ProductId { get; set; }
+        public int BuyerId { get; set; }  //might have to replace with 'BuyerEmail'
+        public DateTime Timestamp { get; set; }
+        public double OriginalPrice { get; set; }
 
     }
 }
