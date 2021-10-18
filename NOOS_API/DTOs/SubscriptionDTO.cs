@@ -12,7 +12,7 @@ namespace NOOS_API.DTOs
         public int ProductId { get; set; }
         public int BuyerId { get; set; }
         public DateTime Timestamp { get; set; }
-        public double OriginalPrice { get; set; }
+        public decimal OriginalPrice { get; set; }
     }
 
     public class ButtonTriggerDTO
@@ -21,7 +21,7 @@ namespace NOOS_API.DTOs
         public int ProductId { get; set; }
         public int BuyerId { get; set; }  //might have to replace with 'BuyerEmail'
         public DateTime Timestamp { get; set; }
-        public double OriginalPrice { get; set; }
+        public decimal OriginalPrice { get; set; }
 
     }
 }

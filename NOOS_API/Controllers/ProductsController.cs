@@ -12,99 +12,87 @@ using System.Threading.Tasks;
 namespace NOOS_API.Controllers
 {
     /// <summary>
-    /// endpoint used for interacting with the Subscriptions in the NOOS database
+    /// endpoint used to interact with Products in NOOS. this will be mostly used
+    /// by seller to view product based cutomer demand
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    
-    public class SubscriptionsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         //inject dependency of subscriptions repository
-        private readonly ISubscriptionRepository _subscriptionRepository; // private property
+        private readonly IProductRepository _productRepository; // private property
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
 
         //constructor
-        public SubscriptionsController(ISubscriptionRepository subscriptionRepository, ILoggerService logger, IMapper mapper)
+        public ProductsController(IProductRepository productRepository, ILoggerService logger, IMapper mapper)
         {
-            _subscriptionRepository = subscriptionRepository;   // declaired variable = whatever the value applicaiton passes in
+            _productRepository = productRepository;   // declaired variable = whatever the value applicaiton passes in
             _logger = logger;
             _mapper = mapper;
         }
-        /// <summary>
-        /// Get all Subscriptions
-        /// </summary>
-        /// <returns>All Subs</returns>
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
-        public async Task<IActionResult> GetSubscriptions()
+        public async Task<IActionResult> GetProducts()
         {
-            var location = GetControllerActionNames(); //prepend with the location when logging | location = Subscriptions             try
+
+            var location = GetControllerActionNames(); //prepend with the location when logging | location = products
             try
             {
-                //map to the DTOs
-                _logger.LogInfo($"{location}:Attempted to retrieve all Subscriptions");
-                var subscriptions = await _subscriptionRepository.FindAll();
-                var response = _mapper.Map<IList<SubscriptionDTO>>(subscriptions);
-                _logger.LogInfo($"{location}:Successfully retrieved all Subscriptions");
-                return Ok(response);  //returning payload
-
+                _logger.LogInfo($"{location}: Attempted Call");
+                var products = await _productRepository.FindAll();
+                var response = _mapper.Map<IList<ProductDTO>>(products);
+                _logger.LogInfo($"{location}: Successful");
+                return Ok(response);
             }
-            catch (Exception e)  //catch the exception
+            catch (Exception e)
             {
+
                 return InternalError($"{location} -{e.Message} - {e.InnerException}");
             }
 
+
         }
-        /// <summary>
-        /// Get a Subscription by ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>A Subscription record</returns>
-        [HttpGet ("{id}")]
+
+
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetSubscription(int id)
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var location = GetControllerActionNames(); //prepend with the location when logging | location
+
+            var location = GetControllerActionNames(); //prepend with the location when logging | location = products
             try
             {
-                //map to the DTOs
-                _logger.LogInfo($"{location}:Attempted to retrieve a Subscription");
-                var subscription = await _subscriptionRepository.FindById(id);
-                if (subscription == null)
+                _logger.LogInfo($"{location}: Attempted Call for {id}");
+                var product = await _productRepository.FindById(id);
+                if (product == null)
                 {
-                    _logger.LogInfo($"{location}:Subscription with id: {id} was not found");
+                    _logger.LogWarn($"{location}: failed to retrieve the record withproduct id: {id}");
                     return NotFound();
                 }
-                var response = _mapper.Map<SubscriptionDTO>(subscription);
-                _logger.LogInfo($"{location}:Successfully retrieved all Subscriptions");
-                return Ok(response);  //returning payload
-
+                var response = _mapper.Map<ProductDTO>(product);
+                _logger.LogInfo($"{location}: Successful");
+                return Ok(response);
             }
-            catch (Exception e)  //catch the exception
+            catch (Exception e)
             {
                 return InternalError($"{location} -{e.Message} - {e.InnerException}");
             }
         }
 
-        /// <summary>
-        /// Triggered by the NOOS button in the product page
-        /// </summary>
-        /// <param name="subscriptionDTO"></param>
-        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create([FromQuery] ButtonTriggerDTO subscriptionDTO)
+        public async Task<IActionResult> Create([FromBody] ProductCreateDTO productDTO)
         {
             var location = GetControllerActionNames();
             try
             {
                 _logger.LogInfo($"{location}: NOOS button triggerd");
-                if (subscriptionDTO == null)
+                if (productDTO == null)
                 {
                     _logger.LogWarn($"{location}:Empty request was submitted");
                     return BadRequest(ModelState); // model state trackes data flow
@@ -115,19 +103,27 @@ namespace NOOS_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var subscription = _mapper.Map<Subscription>(subscriptionDTO); //take from DTO and map to Sub
-                var isSuccess = await _subscriptionRepository.Create(subscription);
+                var product = _mapper.Map<Product>(productDTO); //take from DTO and map to Sub
+                var isSuccess = await _productRepository.Create(product);
                 if (!isSuccess)
                 {
                     _logger.LogWarn($"{location}:Data entry failed!");
                 }
-                return Created("Subscription recorded", new { subscription });
+                return Created("Subscription recorded", new { product });
+
             }
             catch (Exception e)
             {
+
                 return InternalError($"{location} -{e.Message} - {e.InnerException}");
             }
+        
+        
         }
+
+
+
+
         // To know which controller and which action made an error, following logging function implemented
 
         private string GetControllerActionNames()
@@ -143,7 +139,6 @@ namespace NOOS_API.Controllers
             _logger.LogError(message);
             return StatusCode(500, "Something went wrong. Please contact the Administrator");
         }
-
 
 
     }

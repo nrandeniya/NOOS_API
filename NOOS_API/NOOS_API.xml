@@ -4,6 +4,12 @@
         <name>NOOS_API</name>
     </assembly>
     <members>
+        <member name="T:NOOS_API.Controllers.ProductsController">
+            <summary>
+            endpoint used to interact with Products in NOOS. this will be mostly used
+            by seller to view product based cutomer demand
+            </summary>
+        </member>
         <member name="T:NOOS_API.Controllers.SubscriptionsController">
             <summary>
             endpoint used for interacting with the Subscriptions in the NOOS database

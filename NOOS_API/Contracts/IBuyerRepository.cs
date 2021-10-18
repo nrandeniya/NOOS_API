@@ -8,5 +8,6 @@ namespace NOOS_API.Contracts
 {
     public interface IBuyerRepository : IRepositoryBase<Buyer>
     {
+
     }
 }

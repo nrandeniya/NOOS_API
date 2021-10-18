@@ -11,7 +11,7 @@ namespace NOOS_API.Data
         public int ProductId { get; set; }
         public int BuyerId { get; set; }
         public DateTime Timestamp { get; set; }
-        public double OriginalPrice { get; set; }
+        public decimal OriginalPrice { get; set; }
 
     }
 }
