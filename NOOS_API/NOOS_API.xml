@@ -35,5 +35,17 @@
             <param name="subscriptionDTO"></param>
             <returns></returns>
         </member>
+        <member name="T:NOOS_API.Controllers.UsersController">
+            <summary>
+            endpoint for user login
+            </summary>
+        </member>
+        <member name="M:NOOS_API.Controllers.UsersController.Login(NOOS_API.DTOs.UserDTO)">
+            <summary>
+            User  login endpoint
+            </summary>
+            <param name="userDTO"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

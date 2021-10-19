@@ -18,6 +18,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace NOOS_API
 {
@@ -37,6 +40,7 @@ namespace NOOS_API
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()    //from seeduser/roles
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddCors(o =>           // allowing universal access for global intrerctions| restrictions will be places on the function level
@@ -48,6 +52,21 @@ namespace NOOS_API
             });
 
             services.AddAutoMapper(typeof(Maps));  // mapping database
+
+            //JSON Web Tokens for authentication
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(o => {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                    });
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
@@ -71,14 +90,15 @@ namespace NOOS_API
             //addingindividual controllers
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IBuyerRepository, BuyerRepository>();
+            services.AddScoped<IBuyerRepository, BuyerRepository>(); 
 
             
             services.AddControllers();   // leave the controller for last (not critical)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, 
+            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager ) // objects coming in
         {
             if (env.IsDevelopment())
             {
@@ -101,6 +121,9 @@ namespace NOOS_API
             app.UseHttpsRedirection();
 
             app.UseCors("CorsPolicy");
+
+            SeedData.Seed(userManager, roleManager); // must add these to the configure function above
+
             app.UseRouting();
 
             app.UseAuthentication();

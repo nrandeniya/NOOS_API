@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NOOS_API.Contracts;
@@ -52,10 +53,7 @@ namespace NOOS_API.Controllers
 
                 return InternalError($"{location} -{e.Message} - {e.InnerException}");
             }
-
-
         }
-
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -85,6 +83,7 @@ namespace NOOS_API.Controllers
         }
 
         [HttpPost]
+      //  [Authorize(Roles ="Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] ProductCreateDTO productDTO)
         {
