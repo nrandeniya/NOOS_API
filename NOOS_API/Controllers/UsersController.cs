@@ -23,7 +23,7 @@ namespace NOOS_API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        
+
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILoggerService _logger;
@@ -38,34 +38,66 @@ namespace NOOS_API.Controllers
             _config = config;
         }
 
+        // new Endpoint for registration. ADD more fields later with a new userDTO
+        [Route("register")]
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody] UserDTO userDTO) // userDTO same in both for registration and login to simplify
+       
+        {
+            var location = GetControllerActionNames();
+            try
+            {
+                var username = userDTO.EmailAddress;   // chose to use 'email' instead of 'username'
+                var password = userDTO.Password;
+                _logger.LogInfo($"{location}: Registration attempt from a user {username}");
 
+                var user = new IdentityUser { Email = username, UserName = username };
+                var result = await _userManager.CreateAsync(user, password);
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        _logger.LogInfo($"{location}: {error.Code} {error.Description}");
+                    }
+                    return InternalError($"{location}: {username} User registration attempt failed");
+                }
+                return Ok(new { result.Succeeded });
+            }
+
+            catch (Exception e)
+            {
+                return InternalError($"{location}: {e.Message} - {e.InnerException}");
+            }
+
+        }
 
         /// <summary>
         /// User  login endpoint
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns></returns>
+        [Route("login")]
         [AllowAnonymous]
         [HttpPost]
-
         public async Task<IActionResult> Login([FromBody] UserDTO userDTO)
         {
             var location = GetControllerActionNames();
             try
             {
-                var email = userDTO.Email;   // chose to use 'email' instead of 'username'
+                var username = userDTO.EmailAddress;   // chose to use 'email' instead of 'username'
                 var password = userDTO.Password;
-                _logger.LogInfo($"{location}: Login attemt from a user {email}");
-                var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
+                _logger.LogInfo($"{location}: Login attemt from a user {username}");
+                var result = await _signInManager.PasswordSignInAsync(username, password, false, false);
 
                 if (result != null)  // this was reverted from if(result != null)  OR if(result.Succeeded)
                 {
-                    _logger.LogInfo($"{location}: {email} Successfully authenticated");
-                    var user = await _userManager.FindByEmailAsync(email);
+                    _logger.LogInfo($"{location}: {username} Successfully authenticated");
+                    var user = await _userManager.FindByEmailAsync(username);
                     var tokenString = await GenerateJSONWebToken(user);  // passing the user object to gnereate a JSON token
                     return Ok(new { token = tokenString});
                 }
-                _logger.LogWarn($"{location}: {email} Not authenticated");
+                _logger.LogWarn($"{location}: {username} Not authenticated");
                 return Unauthorized(userDTO);
 
             }

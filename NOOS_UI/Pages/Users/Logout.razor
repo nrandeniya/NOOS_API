@@ -1,0 +1,16 @@
+﻿@page "/logout"
+
+@using NOOS_UI.Contracts
+
+@inject IAuthenticationRepository _authRepo // dependency injection
+@inject NavigationManager _navMan
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await _authRepo.Logout();
+        _navMan.NavigateTo("/");
+    }
+
+}
