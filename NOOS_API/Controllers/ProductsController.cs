@@ -28,10 +28,12 @@ namespace NOOS_API.Controllers
         //constructor
         public ProductsController(IProductRepository productRepository, ILoggerService logger, IMapper mapper)
         {
-            _productRepository = productRepository;   // declaired variable = whatever the value applicaiton passes in
+            _productRepository = productRepository;   // declaired variable = whatever the value applicaiton passes 
             _logger = logger;
             _mapper = mapper;
         }
+
+        // write a constructor for subscription
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,11 +83,13 @@ namespace NOOS_API.Controllers
                 return InternalError($"{location} -{e.Message} - {e.InnerException}");
             }
         }
+        // copy
+       
 
         [HttpPost]
-      //  [Authorize(Roles ="Administrator")]
+      //[Authorize(Roles ="Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create([FromBody] ProductCreateDTO productDTO)
+        public async Task<IActionResult> Create([FromQuery] ProductCreateDTO productDTO)
         {
             var location = GetControllerActionNames();
             try

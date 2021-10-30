@@ -11,7 +11,7 @@ namespace NOOS_UI.Providers
 {
     public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     {
-        
+
 
         private readonly ILocalStorageService _localStorage;
         private readonly JwtSecurityTokenHandler _tokenHandler;

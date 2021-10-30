@@ -10,6 +10,7 @@ namespace NOOS_API.DTOs
         public int Id { get; set; }
         public int SellerId { get; set; }
         public int ProductId { get; set; }
+        public string BuyerEmail { get; set; }
         public int BuyerId { get; set; }
         public DateTime Timestamp { get; set; }
         public decimal OriginalPrice { get; set; }

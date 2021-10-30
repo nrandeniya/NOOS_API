@@ -19,8 +19,17 @@ namespace NOOS_API.Services
          
         public async Task<bool> Create(Subscription entity)
         {
-            await _db.Subscriptions.AddAsync(entity);
-            return await Save();     // calling my own function
+            try
+            {
+                await _db.Subscriptions.AddAsync(entity);
+                return await Save();     // calling my own function
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+           
         }
 
         public async Task<bool> Delete(Subscription entity)

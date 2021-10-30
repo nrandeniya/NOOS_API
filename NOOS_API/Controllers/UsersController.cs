@@ -42,7 +42,7 @@ namespace NOOS_API.Controllers
         [Route("register")]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserDTO userDTO) // userDTO same in both for registration and login to simplify
-       
+
         {
             var location = GetControllerActionNames();
             try
@@ -94,8 +94,9 @@ namespace NOOS_API.Controllers
                 {
                     _logger.LogInfo($"{location}: {username} Successfully authenticated");
                     var user = await _userManager.FindByEmailAsync(username);
+                    _logger.LogInfo($"{location}: Generating Token");
                     var tokenString = await GenerateJSONWebToken(user);  // passing the user object to gnereate a JSON token
-                    return Ok(new { token = tokenString});
+                    return Ok(new { token = tokenString });
                 }
                 _logger.LogWarn($"{location}: {username} Not authenticated");
                 return Unauthorized(userDTO);
@@ -106,7 +107,7 @@ namespace NOOS_API.Controllers
 
                 return InternalError($"{location}: {e.Message} - {e.InnerException}");
             }
-          
+
         }
 
 
@@ -128,11 +129,11 @@ namespace NOOS_API.Controllers
 
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"], claims, null, expires: DateTime.Now.AddMinutes(5), signingCredentials: credentials); // expires after 5 mins of issuing
-            
-            return new JwtSecurityTokenHandler().WriteToken(token); 
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        
+
         private string GetControllerActionNames()
         {
             var controller = ControllerContext.ActionDescriptor.ControllerName;

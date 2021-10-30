@@ -13,8 +13,8 @@ namespace NOOS_API.Data
         {
             SeedRoles(roleManager).Wait();
             SeedUsers(userManager).Wait();
-        
-        
+
+
         }
         private async static Task SeedUsers(UserManager<IdentityUser> userManager)
         {
@@ -30,7 +30,7 @@ namespace NOOS_API.Data
                 {
                     await userManager.AddToRoleAsync(user, "Administrator");
                 }
-            
+
             }
 
             if (await userManager.FindByEmailAsync("customer1@gmail.com") == null)
@@ -67,14 +67,14 @@ namespace NOOS_API.Data
         private async static Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
 
-            if (! await roleManager.RoleExistsAsync("Administrator"))
+            if (!await roleManager.RoleExistsAsync("Administrator"))
             {
                 var role = new IdentityRole
                 {
                     Name = "Administrator"
                 };
                 await roleManager.CreateAsync(role);
-            
+
             }
 
             if (!await roleManager.RoleExistsAsync("Customer"))
@@ -84,13 +84,7 @@ namespace NOOS_API.Data
                     Name = "Customer"
                 };
                 await roleManager.CreateAsync(role);
-
             }
-
-
-
-
-
 
         }
 

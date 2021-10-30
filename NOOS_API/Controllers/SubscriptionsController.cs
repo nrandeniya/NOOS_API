@@ -91,6 +91,48 @@ namespace NOOS_API.Controllers
             }
         }
 
+        [HttpGet("{id:int}, {SellerID:int}, {BuyerEmail},{OriginalPrice:decimal}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SubscribeToProduct(int id, int SellerID, string BuyerEmail, decimal OriginalPrice
+)
+        {
+
+            var location = GetControllerActionNames(); //prepend with the location when logging | location = products
+            try
+            {
+                _logger.LogInfo($"{location}: Attempted Call for {id}");
+
+                var subscribeDTO = new SubscriptionDTO();
+                subscribeDTO.ProductId = id;
+                subscribeDTO.SellerId = SellerID;
+                //add the rest
+
+
+                // var subscriptionDbDt = _mapper.Map<Subscription>(subscribeDTO); //take from DTO and map to Sub
+                var subscriptionDbDt = _mapper.Map<Subscription>(new Subscription { SellerId = SellerID, ProductId = id, BuyerId = 123, OriginalPrice = OriginalPrice, Timestamp = DateTime.Now });
+                var isSuccess = await _subscriptionRepository.Create(subscriptionDbDt);
+
+
+
+                //  var product = await _productRepository.FindById(id);
+                //if (product == null)
+                //{
+                //    _logger.LogWarn($"{location}: failed to retrieve the record withproduct id: {id}");
+                //    return NotFound();
+                //}
+                var response = _mapper.Map<SubscriptionDTO>(subscribeDTO);
+                _logger.LogInfo($"{location}: Successful");
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return InternalError($"{location} -{e.Message} - {e.InnerException}");
+            }
+        }
+
+
         /// <summary>
         /// Triggered by the NOOS button in the product page
         /// </summary>

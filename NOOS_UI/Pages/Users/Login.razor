@@ -1,5 +1,4 @@
 ﻿@page "/login"
-
 @using NOOS_UI.Models
 @using NOOS_UI.Contracts
 
@@ -41,6 +40,7 @@
 
     private LoginModel Model = new LoginModel();
     private bool response = true;
+
     private async Task HandleLogin()
     {
         response = await _authRepo.Login(Model);  // response is a boolean by design
@@ -49,7 +49,7 @@
         {
             _navManager.NavigateTo("/");   //goto to root and later to login
         }
-      
+
     }
 
 }

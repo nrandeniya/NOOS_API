@@ -1,13 +1,13 @@
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NOOS_UI.Contracts;
-using NOOS_UI.Data;
 using NOOS_UI.Providers;
 using NOOS_UI.Services;
 using System;
@@ -36,9 +36,10 @@ namespace NOOS_UI
             services.AddBlazoredLocalStorage();  // CHECK the security concerns come with this package
             services.AddHttpClient();   // added for login and registration authentication 
             services.AddScoped<ApiAuthenticationStateProvider>();
-            services.AddScoped<ApiAuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
+            services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
             services.AddScoped<JwtSecurityTokenHandler>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>(); // to be able to inject
+            services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -34,7 +34,7 @@ namespace NOOS_UI.Services
         public async Task<bool> Login(LoginModel user)
         {
             var request = new HttpRequestMessage(HttpMethod.Post
-                , EndPoints.LoginEndpoint);
+                , Endpoints.LoginEndpoint);
             request.Content = new StringContent(JsonConvert.SerializeObject(user)
                 , Encoding.UTF8, "application/json");
 
@@ -44,7 +44,7 @@ namespace NOOS_UI.Services
             if (!response.IsSuccessStatusCode)   // connecting to servicer-> BaserRepository line 62 ish
             {
                 return false;
-            } 
+            }
 
             var content = await response.Content.ReadAsStringAsync();
             var token = JsonConvert.DeserializeObject<TokenResponse>(content);
@@ -54,7 +54,8 @@ namespace NOOS_UI.Services
 
             //change auth state of app
             // created a new folder called providers 
-            await ((ApiAuthenticationStateProvider)_authenticationStateProvider).LoggedIn() ;  //typecasting for apiauth.....
+            await ((ApiAuthenticationStateProvider)_authenticationStateProvider)
+                .LoggedIn();  //typecasting for apiauth.....
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token.Token);
 
@@ -69,14 +70,14 @@ namespace NOOS_UI.Services
 
         public async Task<bool> Register(RegistrationModel user)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, EndPoints.RegisterEndpoint);
+            var request = new HttpRequestMessage(HttpMethod.Post, Endpoints.RegisterEndpoint);
             request.Content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
 
             var client = _client.CreateClient();
             HttpResponseMessage response = await client.SendAsync(request);
 
             return response.IsSuccessStatusCode;
-            
+
         }
     }
 }
