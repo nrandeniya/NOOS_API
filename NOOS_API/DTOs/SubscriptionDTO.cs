@@ -11,7 +11,7 @@ namespace NOOS_API.DTOs
         public int SellerId { get; set; }
         public int ProductId { get; set; }
         public string BuyerEmail { get; set; }
-        public int BuyerId { get; set; }
+       // public int BuyerId { get; set; }
         public DateTime Timestamp { get; set; }
         public decimal OriginalPrice { get; set; }
     }
@@ -20,7 +20,7 @@ namespace NOOS_API.DTOs
     {
         public int SellerId { get; set; }
         public int ProductId { get; set; }
-        public int BuyerId { get; set; }  //might have to replace with 'BuyerEmail'
+        public string BuyerEmail { get; set; }  //Replaced from BuyerID
         public DateTime Timestamp { get; set; }
         public decimal OriginalPrice { get; set; }
 

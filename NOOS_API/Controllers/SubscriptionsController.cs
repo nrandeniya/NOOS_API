@@ -91,12 +91,11 @@ namespace NOOS_API.Controllers
             }
         }
 
-        [HttpGet("{id:int}, {SellerID:int}, {BuyerEmail},{OriginalPrice:decimal}")]
+        [HttpPost("{id:int}/ {SellerID:int}/ {BuyerEmail}/ {OriginalPrice:decimal}")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SubscribeToProduct(int id, int SellerID, string BuyerEmail, decimal OriginalPrice
-)
+        public async Task<IActionResult> SubscribeToProduct(int id, int SellerID, string BuyerEmail, decimal OriginalPrice)  
         {
 
             var location = GetControllerActionNames(); //prepend with the location when logging | location = products
@@ -107,11 +106,13 @@ namespace NOOS_API.Controllers
                 var subscribeDTO = new SubscriptionDTO();
                 subscribeDTO.ProductId = id;
                 subscribeDTO.SellerId = SellerID;
-                //add the rest
+                subscribeDTO.BuyerEmail = BuyerEmail;
+                subscribeDTO.OriginalPrice = OriginalPrice;
+
 
 
                 // var subscriptionDbDt = _mapper.Map<Subscription>(subscribeDTO); //take from DTO and map to Sub
-                var subscriptionDbDt = _mapper.Map<Subscription>(new Subscription { SellerId = SellerID, ProductId = id, BuyerId = 123, OriginalPrice = OriginalPrice, Timestamp = DateTime.Now });
+                var subscriptionDbDt = _mapper.Map<Subscription>(new Subscription { SellerId = SellerID, ProductId = id, OriginalPrice = OriginalPrice, BuyerEmail = BuyerEmail, Timestamp = DateTime.Now }); 
                 var isSuccess = await _subscriptionRepository.Create(subscriptionDbDt);
 
 
