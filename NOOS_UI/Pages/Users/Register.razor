@@ -36,6 +36,10 @@
                 <InputText Id="confirmpassword" class="form-control" @bind-Value="Model.ConfirmPassword" />
                 <ValidationMessage For="@(() => Model.ConfirmPassword)" />
             </div>
+            <div>
+                <input type="checkbox" @bind="seller_check" id="seller-check" />
+                <label for="seller_check">I am registering as a seller </label>
+            </div>
             <button type="submit" class="btn btn-primary btn-block">Register</button>
 
         </EditForm>
@@ -47,6 +51,7 @@
     private RegistrationModel Model = new RegistrationModel();
 
     private bool response = true;
+    private bool seller_check = false;
 
     private async Task HandleRegistration()
     {
@@ -55,7 +60,7 @@
         if (response)
         {
             _navMan.NavigateTo("/login");   //goto to root and later to login
-        }     
+        }
     }
 
 }

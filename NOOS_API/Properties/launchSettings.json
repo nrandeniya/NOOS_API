@@ -10,7 +10,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,   // open in browser or not
+      "launchBrowser": false,   // open in browser or not
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

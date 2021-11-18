@@ -141,7 +141,7 @@ namespace NOOS_API.Controllers
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create([FromQuery] ButtonTriggerDTO subscriptionDTO)
+        public async Task<IActionResult> Create([FromBody] ButtonTriggerDTO subscriptionDTO)
         {
             var location = GetControllerActionNames();
             try
