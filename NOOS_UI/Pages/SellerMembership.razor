@@ -1,0 +1,58 @@
+﻿@page "/membership"
+
+
+
+@inject IAuthenticationRepository _authRepo // dependency injection
+@inject NavigationManager _navManager
+
+
+<div class="card">
+    <h3 class="card-title">Membership</h3>
+    @if (!response)
+    {
+        <div class="alert alert-danger">
+            <p> Something went wrong with the login attempt</p>
+        </div>
+
+    }
+
+    <img src="Images/payment-methods.jpg" width="250" />
+
+    <div class="card-body">
+        <EditForm Model="Model" OnValidSubmit="PluginsPage">
+           
+
+            <div class="form-group">
+                <label for="promocode">Promo Code</label>
+                <InputText Id="password" class="form-control" @bind-Value="Model.Password" />
+                <ValidationMessage For="@(() => Model.Password)" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Download the Plugin</button>
+
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private LoginModel Model = new LoginModel();
+    private bool response = true;
+
+
+    private async Task PluginsPage()
+    {
+        //response = await _authRepo.Login(Model);  // response is a boolean by design
+
+        if (response)
+        {
+            _navManager.NavigateTo("/sellerwelcome");   //goto to root and later to login
+        }
+
+    }
+
+
+
+
+}
+

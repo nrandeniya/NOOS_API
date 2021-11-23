@@ -89,7 +89,7 @@ namespace NOOS_API.Controllers
         [HttpPost]
       //[Authorize(Roles ="Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create([FromQuery] ProductCreateDTO productDTO)
+        public async Task<IActionResult> Create([FromBody] ProductCreateDTO productDTO)
         {
             var location = GetControllerActionNames();
             try

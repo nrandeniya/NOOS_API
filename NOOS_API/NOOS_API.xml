@@ -10,6 +10,11 @@
             by seller to view product based cutomer demand
             </summary>
         </member>
+        <member name="T:NOOS_API.Controllers.SellersController">
+            <summary>
+            endpoint used for interacting with the Sellers in the NOOS database
+            </summary>
+        </member>
         <member name="T:NOOS_API.Controllers.SubscriptionsController">
             <summary>
             endpoint used for interacting with the Subscriptions in the NOOS database

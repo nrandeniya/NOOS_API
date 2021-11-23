@@ -24,6 +24,8 @@ namespace NOOS_API.Controllers
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
 
+        public string ProductName { get; private set; }
+
         //constructor
         public SubscriptionsController(ISubscriptionRepository subscriptionRepository, ILoggerService logger, IMapper mapper)
         {
@@ -91,11 +93,11 @@ namespace NOOS_API.Controllers
             }
         }
 
-        [HttpPost("{id:int}/ {SellerID:int}/ {BuyerEmail}/ {OriginalPrice:decimal}")] 
+        [HttpPost("{id:int}/ {ProductName}/ {SellerID:int}/ {BuyerEmail}/ {OriginalPrice:decimal}")] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SubscribeToProduct(int id, int SellerID, string BuyerEmail, decimal OriginalPrice)  
+        public async Task<IActionResult> SubscribeToProduct(int id, string ProductName, int SellerID, string BuyerEmail, decimal OriginalPrice)  
         {
 
             var location = GetControllerActionNames(); //prepend with the location when logging | location = products
@@ -105,6 +107,7 @@ namespace NOOS_API.Controllers
 
                 var subscribeDTO = new SubscriptionDTO();
                 subscribeDTO.ProductId = id;
+                subscribeDTO.ProductName = ProductName;
                 subscribeDTO.SellerId = SellerID;
                 subscribeDTO.BuyerEmail = BuyerEmail;
                 subscribeDTO.OriginalPrice = OriginalPrice;
@@ -112,7 +115,7 @@ namespace NOOS_API.Controllers
 
 
                 // var subscriptionDbDt = _mapper.Map<Subscription>(subscribeDTO); //take from DTO and map to Sub
-                var subscriptionDbDt = _mapper.Map<Subscription>(new Subscription { SellerId = SellerID, ProductId = id, OriginalPrice = OriginalPrice, BuyerEmail = BuyerEmail, Timestamp = DateTime.Now }); 
+                var subscriptionDbDt = _mapper.Map<Subscription>(new Subscription { SellerId = SellerID, ProductId = id, ProductName=ProductName, OriginalPrice = OriginalPrice, BuyerEmail = BuyerEmail, Timestamp = DateTime.Now }); 
                 var isSuccess = await _subscriptionRepository.Create(subscriptionDbDt);
 
 

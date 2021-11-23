@@ -16,7 +16,7 @@ namespace NOOS_API.Mappings
             CreateMap<Subscription, ButtonTriggerDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ProductCreateDTO>().ReverseMap();
-            CreateMap<Buyer, BuyerDTO>().ReverseMap();
+            CreateMap<Seller, SellerDTO>().ReverseMap();
         }
     
     }

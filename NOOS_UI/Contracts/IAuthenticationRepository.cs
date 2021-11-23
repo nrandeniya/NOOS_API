@@ -10,6 +10,7 @@ namespace NOOS_UI.Contracts
     {
         public Task<bool> Register(RegistrationModel user);
         public Task<bool> Login(LoginModel user);
+        //public Task<bool> SellerRegister(SellerRegistrationModel seller); //might have to change it to seller
         public Task Logout();
 
     }

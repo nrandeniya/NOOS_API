@@ -79,5 +79,16 @@ namespace NOOS_UI.Services
             return response.IsSuccessStatusCode;
 
         }
+
+        //public async Task<bool> SellerRegister(SellerModel seller)
+        //{
+        //    var request = new HttpRequestMessage(HttpMethod.Post, Endpoints.SellerRegisterEndpoint);
+        //    request.Content = new StringContent(JsonConvert.SerializeObject(seller), Encoding.UTF8, "application/json");
+
+        //    var client = _client.CreateClient();
+        //    HttpResponseMessage response = await client.SendAsync(request);
+
+        //    return response.IsSuccessStatusCode;
+        //}
     }
 }

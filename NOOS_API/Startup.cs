@@ -90,9 +90,10 @@ namespace NOOS_API
             //addingindividual controllers
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IBuyerRepository, BuyerRepository>(); 
+            services.AddScoped<IBuyerRepository, BuyerRepository>();
+            services.AddScoped<ISellerRepository, SellerRepository>();
 
-            
+
             services.AddControllers();   // leave the controller for last (not critical)
         }
 

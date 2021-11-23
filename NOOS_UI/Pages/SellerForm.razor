@@ -1,0 +1,71 @@
+﻿@page "/sellerform"
+@using NOOS_UI.Models
+@using NOOS_UI.Contracts
+
+@inject ISellerRepository _seller
+
+@inject NavigationManager _navMan
+
+
+<h2>NOOS Seller On-Boarding</h2>
+
+
+@if (!response)
+{
+    <div class="alert alert-danger">
+        <p> Something went wrong with the registraion attempt</p>
+    </div>
+
+}
+<div class="card-body">
+    <EditForm Model="Model" OnValidSubmit="SellerRegistration">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="business-name">Business Name</label>
+            <InputText Id="business-name" class="form-control" @bind-Value="Model.BusinessName" />
+            <ValidationMessage For="@(() => Model.BusinessName)" />
+        </div>
+        <div class="form-group">
+            <label for="business-url">Business Website URL</label>
+            <InputText Id="business-url" class="form-control" @bind-Value="Model.BusinessURL" />
+            <ValidationMessage For="@(() => Model.BusinessURL)" />
+        </div>
+
+        <div class="form-group">
+            <label for="business-industry">Industry</label>
+            <InputText Id="business-industry" class="form-control" @bind-Value="Model.Industry" />
+            <ValidationMessage For="@(() => Model.Industry)" />
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary btn-block">Continue</button>
+
+    </EditForm>
+</div>
+
+@code {
+
+
+
+    private SellerRegister Model = new SellerRegister();
+
+    private bool response = true;
+    public bool seller_check = false;
+
+
+
+    private async Task SellerRegistration()
+    {
+        response = await _seller.Seller(Model);
+
+        if (response)
+        {
+
+            _navMan.NavigateTo("/membership");   //meant to be login
+        }
+
+    }
+
+}

@@ -48,10 +48,14 @@
 
 @code {
 
+
+
     private RegistrationModel Model = new RegistrationModel();
 
     private bool response = true;
-    private bool seller_check = false;
+    public bool seller_check = false;
+
+
 
     private async Task HandleRegistration()
     {
@@ -61,6 +65,7 @@
         {
             _navMan.NavigateTo("/login");   //goto to root and later to login
         }
+
     }
 
 }

@@ -9,6 +9,7 @@ namespace NOOS_API.Data
         public int Id { get; set; }
         public int SellerId { get; set; }
         public int ProductId { get; set; }
+        public string ProductName { get; set; }
         public string BuyerEmail { get; set; }
         public DateTime Timestamp { get; set; }
         public decimal OriginalPrice { get; set; }

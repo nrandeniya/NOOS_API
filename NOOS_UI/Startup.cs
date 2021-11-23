@@ -40,6 +40,7 @@ namespace NOOS_UI
             services.AddScoped<JwtSecurityTokenHandler>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>(); // to be able to inject
             services.AddTransient<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddTransient<ISellerRepository, SellerRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

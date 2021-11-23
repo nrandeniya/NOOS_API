@@ -15,5 +15,6 @@ namespace NOOS_UI.Static
         public static string SubscriptionsEndpoint = $"{BaseUrl}/api/subscriptions/";
         public static string RegisterEndpoint = $"{BaseUrl}/api/users/register/";  // declared in AuthenticationRepository in Services
         public static string LoginEndpoint = $"{BaseUrl}/api/users/login/";
+
     }
 }
